@@ -51,22 +51,17 @@ client.connect(err => {
       console.log("data added successfully", result.insertedCount)
       res.send(result.insertedCount > 0)
     })
+  });
+
+  app.put('AddUsers', async(req, res) => {
+    const user = req.body;
+    const filter = {email: user.email};
+    const options = {upsert: true};
+    const updateDoc = {$set: user};
+    const result = await usersCollection.updateOne(filter, updateDoc, options);
+    res.json(result); 
   })
-    //   app.post('/addOrder', (req, res) => {
-    //     const order = req.body;
-    //     ordersCollection.insertOne(order)
-    //     .then(result => {
-    //        res.send(result.insertedCount > 0)
-    //     })
-    //   })
-
-    //   app.get('/order', (req, res) => {
-    //     ordersCollection.find()
-    //     .toArray((err, cars) => {
-    //       res.send(cars)
-    //     })
-    //   })
-
+    
     //   app.delete('/deleteCar/:id', (req, res)=> {
     //     const id = ObjectID(req.params.id);
     //     carsCollection.findOneAndDelete({_id: id})
