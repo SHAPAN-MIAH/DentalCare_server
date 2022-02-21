@@ -91,7 +91,6 @@ client.connect(err => {
 
 app.get('/', (req, res) => {
   res.send('Hello Doctors')
-  console.log('db connected')
 })
 
 app.listen(port)
