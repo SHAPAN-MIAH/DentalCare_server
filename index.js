@@ -1,6 +1,6 @@
 const express = require('express')
 const MongoClient = require('mongodb').MongoClient;
-// const ObjectID = require('mongodb').ObjectID;
+const ObjectID = require('mongodb').ObjectID;
 const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config()
@@ -16,51 +16,42 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
   const appointmentsCollection = client.db("DoctorsPortal").collection("Appointments");
-//   const ordersCollection = client.db("DoctorsPortal").collection("orders");
+  const usersCollection = client.db("DoctorsPortal").collection("UserCollection");
 
-    //   app.get('/cars', (req, res) => {
-    //     carsCollection.find()
-    //     .toArray((err, cars) => {
-    //       res.send(cars)
-    //     })
-    //   })
-    //   app.get('/cars/:id', (req, res) => {
-    //     const id = ObjectID(req.params.id);
-    //     carsCollection.find(id)
-    //     .toArray((err, cars) => {
-    //       res.send(cars)
-    //     })
-    //   })
+  app.post('/addAppointment', (req, res) => {
+    const newAppointment = req.body;
+    console.log('adding Appointment', newAppointment)
+    appointmentsCollection.insertOne(newAppointment)
+    .then(result => {
+      console.log("data added successfully", result.insertedCount)
+      res.send(result.insertedCount > 0)
+    })
+  })
 
-      app.post('/addAppointment', (req, res) => {
-           const newAppointment = req.body;
-           console.log('adding Appointment', newAppointment)
-           appointmentsCollection.insertOne(newAppointment)
-           .then(result => {
-               console.log("data added successfully", result.insertedCount)
-              res.send(result.insertedCount > 0)
-           })
-      })
+  app.post('/appointmentsByDate', (req, res) => {
+    const date = req.body;
+    console.log('adding date', date.date)
+    appointmentsCollection.find({date: date.date})
+    .toArray((err, documents) => {
+      res.send(documents);
+    })
+  })
 
-      app.post('/appointmentsByDate', (req, res) => {
-        const date = req.body;
-        console.log('adding date', date.date)
-        appointmentsCollection.find({date: date.date})
-        .toArray((err, documents) => {
-          res.send(documents);
-        })
-        
-      })
+  app.get('/patients', (req, res) => {
+    appointmentsCollection.find()
+    .toArray((err, patients) => {
+      res.send(patients)
+    })
+  })
 
-
-      app.get('/patients', (req, res) => {
-            appointmentsCollection.find()
-            .toArray((err, patients) => {
-              res.send(patients)
-            })
-      })
-
-
+  app.post('/AddUsers', async(req, res) => {
+    const newUsers = req.body;
+    await usersCollection.insertOne(newUsers)
+    .then(result => {
+      console.log("data added successfully", result.insertedCount)
+      res.send(result.insertedCount > 0)
+    })
+  })
     //   app.post('/addOrder', (req, res) => {
     //     const order = req.body;
     //     ordersCollection.insertOne(order)
@@ -100,6 +91,7 @@ client.connect(err => {
 
 app.get('/', (req, res) => {
   res.send('Hello Doctors')
+  console.log('db connected')
 })
 
 app.listen(port)
