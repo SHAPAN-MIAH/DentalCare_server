@@ -61,6 +61,14 @@ client.connect(err => {
     const result = await usersCollection.updateOne(filter, updateDoc, options);
     res.json(result); 
   })
+
+  app.put('/AddUsers/Admin', async(req, res) => {
+    const user = req.body;
+    const filter = {email: user.email};
+    const updateDoc = {$set: {role: 'admin'}};
+    const result = await usersCollection.updateOne(filter, updateDoc);
+    res.json(result)
+  })
     
     //   app.delete('/deleteCar/:id', (req, res)=> {
     //     const id = ObjectID(req.params.id);
