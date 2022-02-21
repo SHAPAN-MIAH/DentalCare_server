@@ -69,6 +69,17 @@ client.connect(err => {
     const result = await usersCollection.updateOne(filter, updateDoc);
     res.json(result)
   })
+
+  app.get('/users/admin/:email', async(req, res) => {
+    const email = req.params.email;
+    const query = {email: email};
+    const user = await usersCollection.findOne(query);
+    let isAdmin = false;
+    if(user?.role === 'admin'){
+      isAdmin = true;
+    }
+    res.json({admin: isAdmin});
+  })
     
     //   app.delete('/deleteCar/:id', (req, res)=> {
     //     const id = ObjectID(req.params.id);
