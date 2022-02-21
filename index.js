@@ -70,7 +70,7 @@ client.connect(err => {
     res.json(result)
   })
 
-  app.get('/users/:email', async(req, res) => {
+  app.get('/AddUsers/admin/:email', async(req, res) => {
     const email = req.params.email;
     const query = {email: email};
     const user = await usersCollection.findOne(query);
