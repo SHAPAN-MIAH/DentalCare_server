@@ -62,7 +62,7 @@ client.connect(err => {
     res.json(result); 
   })
 
-  app.put('/AddUsers/Admin', async(req, res) => {
+  app.put('/AddUsers/admin', async(req, res) => {
     const user = req.body;
     const filter = {email: user.email};
     const updateDoc = {$set: {role: 'admin'}};
