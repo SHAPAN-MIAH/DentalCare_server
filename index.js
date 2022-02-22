@@ -2,10 +2,16 @@ const express = require('express')
 const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 const cors = require('cors');
+const admin = require("firebase-admin");
 const bodyParser = require('body-parser');
 require('dotenv').config()
 
 const port = process.env.PORT || 4000
+
+const serviceAccount = require(process.env.firebaseKey.json);
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
 const app = express()
 app.use(cors());
@@ -17,6 +23,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
   const appointmentsCollection = client.db("DoctorsPortal").collection("Appointments");
   const usersCollection = client.db("DoctorsPortal").collection("UserCollection");
+
 
   app.post('/addAppointment', (req, res) => {
     const newAppointment = req.body;
@@ -62,12 +69,40 @@ client.connect(err => {
     res.json(result); 
   })
 
-  app.put('/AddUsers/admin', async(req, res) => {
+
+  async function verifyToken(req, res, next){
+    if(req.headers?.authorization?.startsWith('Bearer ')){
+      const token = req.headers.authorization.split(' ')[1];
+
+      try{
+        const decodedUser = await admin.auth().verifyIdToken(token);
+        req.decodedEmail = decodedUser.email;
+      }
+      catch{
+
+      }
+    }
+    next()
+  }
+
+  app.put('/AddUsers/admin',  verifyToken, async(req, res) => {
     const user = req.body;
-    const filter = {email: user.email};
-    const updateDoc = {$set: {role: 'admin'}};
-    const result = await usersCollection.updateOne(filter, updateDoc);
-    res.json(result)
+    const requester = req.decodedEmail;
+
+    if(requester){
+      const requesterAccount = await usersCollection.findOne({email: requester});
+
+      if(requesterAccount.role === 'admin'){
+        const filter = {email: user.email};
+        const updateDoc = {$set: {role: 'admin'}};
+        const result = await usersCollection.updateOne(filter, updateDoc);
+        res.json(result)
+      }
+    }
+    else{
+      res.status(403).json({message: 'You do not have access to make admin'});
+    }
+    
   })
 
   app.get('/AddUsers/admin/:email', async(req, res) => {
@@ -80,6 +115,8 @@ client.connect(err => {
     }
     res.json({admin: isAdmin});
   })
+
+  
     
     //   app.delete('/deleteCar/:id', (req, res)=> {
     //     const id = ObjectID(req.params.id);
