@@ -126,6 +126,12 @@ client.connect(err => {
       res.send(result.insertedCount > 0)
     })
   })
+  app.get('/review', (req, res) => {
+    reviewCollection.find()
+    .toArray((err, review) => {
+      res.send(review)
+    })
+  })
     
     //   app.delete('/deleteCar/:id', (req, res)=> {
     //     const id = ObjectID(req.params.id);
