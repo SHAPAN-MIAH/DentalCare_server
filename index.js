@@ -23,6 +23,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
   const appointmentsCollection = client.db("DoctorsPortal").collection("Appointments");
   const usersCollection = client.db("DoctorsPortal").collection("UserCollection");
+  const reviewCollection = client.db("DoctorsPortal").collection("Reviews");
 
 
   app.post('/addAppointment', (req, res) => {
@@ -116,7 +117,15 @@ client.connect(err => {
     res.json({admin: isAdmin});
   })
 
-  
+  app.post('/addReview', (req, res) => {
+    const newReview = req.body;
+    console.log('adding Appointment', newReview)
+    reviewCollection.insertOne(newReview)
+    .then(result => {
+      console.log("data added successfully", result.insertedCount)
+      res.send(result.insertedCount > 0)
+    })
+  })
     
     //   app.delete('/deleteCar/:id', (req, res)=> {
     //     const id = ObjectID(req.params.id);
