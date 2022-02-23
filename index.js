@@ -56,9 +56,9 @@ client.connect(err => {
   // })
 
   app.get('/appointmentsByDateEmail', async(req, res) => {
-    // const date = req.query.date;
     const email = req.query.email;
-    const query = {email: email};
+    const date = req.query.date;
+    const query = {email: email, date: date};
     await appointmentsCollection.find(query)
     .toArray((err, appointmentsByDateEmail) => {
       res.send(appointmentsByDateEmail)
