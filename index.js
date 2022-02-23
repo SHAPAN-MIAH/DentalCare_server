@@ -133,25 +133,25 @@ client.connect(err => {
     })
   })
     
-    //   app.delete('/deleteCar/:id', (req, res)=> {
-    //     const id = ObjectID(req.params.id);
-    //     carsCollection.findOneAndDelete({_id: id})
-    //     .then(result => {
-    //       res.send(result.deletedCount > 0)
-    //     })
-    //   })
+  app.delete('/deleteAppointment/:id', (req, res)=> {
+    const id = ObjectID(req.params.id);
+    appointmentsCollection.findOneAndDelete({_id: id})
+    .then(result => {
+      res.send(result.deletedCount > 0)
+    })
+  })
 
-    //   app.patch('/updateCar/:id', (req, res) => {
-    //     const id = ObjectID(req.params.id);
-    //     carsCollection.updateOne({_id: id},
-    //     {
-    //       $set: {name: req.body.name, model: req.body.model, price: req.body.price}
-    //     })
-    //     .then( result => {
-    //       res.send(result.modifiedCount > 0)
-    //     })
+  //   app.patch('/updateCar/:id', (req, res) => {
+  //     const id = ObjectID(req.params.id);
+  //     carsCollection.updateOne({_id: id},
+  //     {
+  //       $set: {name: req.body.name, model: req.body.model, price: req.body.price}
+  //     })
+  //     .then( result => {
+  //       res.send(result.modifiedCount > 0)
+  //     })
 
-    //   })
+  //   })
   
 });
 
