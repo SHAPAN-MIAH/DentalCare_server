@@ -36,14 +36,15 @@ client.connect(err => {
     })
   })
 
-  // app.get('/appointmentsByEmail', (req, res) => {
-  //   const email = req.query.email;
-  //   const query = {email: email};
-  //   appointmentsCollection.find(query)
-  //   .toArray((err, documents) => {
-  //     res.send(documents);
-  //   })
-  // })
+  app.get('/appointmentsByDateEmail', (req, res) => {
+    const date = req.query.date;
+    const email = req.query.email;
+    const query = {email: email, date: date};
+    appointmentsCollection.find(query)
+    .toArray((err, documents) => {
+      res.send(documents);
+    })
+  })
 
   app.post('/appointmentsByDateEmail', async(req, res) => {
     const date = req.body.date;
