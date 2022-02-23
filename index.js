@@ -57,7 +57,7 @@ client.connect(err => {
 
   app.get('/appointmentsByDateEmail', async(req, res) => {
     const email = req.query.email;
-    const date = req.query.date;
+    const date = req.query.date.date;
     const query = {email: email, date: date};
     await appointmentsCollection.find(query)
     .toArray((err, appointmentsByDateEmail) => {
