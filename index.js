@@ -45,7 +45,7 @@ client.connect(err => {
   //   })
   // })
 
-  app.post('/appointmentsByDateEmail', (req, res) => {
+  app.get('/appointmentsByDateEmail', (req, res) => {
     const date = req.query.date;
     const email = req.query.email;
     const query = {email: email, date: date};
