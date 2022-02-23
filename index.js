@@ -56,7 +56,10 @@ client.connect(err => {
   // })
 
   app.get('/appointmentsByDateEmail', (req, res) => {
-    appointmentsCollection.find()
+    const date = req.body.date;
+    const email = req.body.email;
+    const query = {email: email, date: date};
+    appointmentsCollection.find(query)
     .toArray((err, appointmentsByDateEmail) => {
       res.send(appointmentsByDateEmail)
     })
