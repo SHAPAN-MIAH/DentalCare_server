@@ -36,25 +36,6 @@ client.connect(err => {
     })
   })
 
-  // app.get('/appointmentsByDateEmail', async(req, res) => {
-  //   const date = req.query.date;
-  //   const email = req.query.email;
-  //   const query = {email: email, date: date};
-  //   await appointmentsCollection.find(query)
-  //   .toArray((err, documents) => {
-  //     res.send(documents);
-  //   })
-  // })
-
-  // app.post('/appointmentsByDateEmail', async(req, res) => {
-  //   const date = req.body.date;
-  //   const email = req.body.email;
-  //   const query = {email: email, date: date};
-  //   const cursor = appointmentsCollection.find(query);
-  //   const appointment = await cursor.toArray();
-  //   res.send(appointment);
-  // })
-
   app.get('/appointmentsByDateEmail', async(req, res) => {
     const email = req.query.email;
     const date = new Date(req.query.date).toLocaleDateString();
@@ -160,18 +141,6 @@ client.connect(err => {
       res.send(result.deletedCount > 0)
     })
   })
-
-  //   app.patch('/updateCar/:id', (req, res) => {
-  //     const id = ObjectID(req.params.id);
-  //     carsCollection.updateOne({_id: id},
-  //     {
-  //       $set: {name: req.body.name, model: req.body.model, price: req.body.price}
-  //     })
-  //     .then( result => {
-  //       res.send(result.modifiedCount > 0)
-  //     })
-
-  //   })
   
 });
 
