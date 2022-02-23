@@ -36,10 +36,20 @@ client.connect(err => {
     })
   })
 
-  app.post('/appointmentsByDate', (req, res) => {
-    const date = req.body;
-    console.log('adding date', date.date)
-    appointmentsCollection.find({date: date.date})
+  // app.get('/appointmentsByEmail', (req, res) => {
+  //   const email = req.query.email;
+  //   const query = {email: email};
+  //   appointmentsCollection.find(query)
+  //   .toArray((err, documents) => {
+  //     res.send(documents);
+  //   })
+  // })
+
+  app.post('/appointmentsByDateEmail', (req, res) => {
+    const date = req.query.date;
+    const email = req.query.email;
+    const query = {email: email, date: date};
+    appointmentsCollection.find(query)
     .toArray((err, documents) => {
       res.send(documents);
     })
