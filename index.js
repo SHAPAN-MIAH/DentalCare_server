@@ -36,23 +36,30 @@ client.connect(err => {
     })
   })
 
-  app.get('/appointmentsByDateEmail', (req, res) => {
-    const date = req.query.date;
-    const email = req.query.email;
-    const query = {email: email, date: date};
-    appointmentsCollection.find(query)
-    .toArray((err, documents) => {
-      res.send(documents);
-    })
-  })
+  // app.get('/appointmentsByDateEmail', async(req, res) => {
+  //   const date = req.query.date;
+  //   const email = req.query.email;
+  //   const query = {email: email, date: date};
+  //   await appointmentsCollection.find(query)
+  //   .toArray((err, documents) => {
+  //     res.send(documents);
+  //   })
+  // })
 
-  app.post('/appointmentsByDateEmail', async(req, res) => {
-    const date = req.body.date;
-    const email = req.body.email;
-    const query = {email: email, date: date};
-    const cursor = appointmentsCollection.find(query);
-    const appointment = await cursor.toArray();
-    res.send(appointment);
+  // app.post('/appointmentsByDateEmail', async(req, res) => {
+  //   const date = req.body.date;
+  //   const email = req.body.email;
+  //   const query = {email: email, date: date};
+  //   const cursor = appointmentsCollection.find(query);
+  //   const appointment = await cursor.toArray();
+  //   res.send(appointment);
+  // })
+
+  app.get('/appointmentsByDateEmail', (req, res) => {
+    appointmentsCollection.find()
+    .toArray((err, appointmentsByDateEmail) => {
+      res.send(appointmentsByDateEmail)
+    })
   })
 
   app.get('/patients', (req, res) => {
