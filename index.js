@@ -55,11 +55,11 @@ client.connect(err => {
   //   res.send(appointment);
   // })
 
-  app.get('/appointmentsByDateEmail', (req, res) => {
+  app.get('/appointmentsByDateEmail', async(req, res) => {
     const date = req.query.date;
     const email = req.query.email;
     const query = {email: email, date: date};
-    appointmentsCollection.find(query)
+    await appointmentsCollection.find(query)
     .toArray((err, appointmentsByDateEmail) => {
       res.send(appointmentsByDateEmail)
     })
