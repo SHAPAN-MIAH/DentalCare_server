@@ -46,10 +46,10 @@ client.connect(err => {
     })
   })
 
-  app.get('/patients', (req, res) => {
+  app.get('/allAppointments', (req, res) => {
     appointmentsCollection.find()
-    .toArray((err, patients) => {
-      res.send(patients)
+    .toArray((err, allAppointments) => {
+      res.send(allAppointments)
     })
   })
 
