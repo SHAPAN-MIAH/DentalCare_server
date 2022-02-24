@@ -9,7 +9,6 @@ require('dotenv').config()
 const port = process.env.PORT || 4000
 
 const serviceAccount = require('./firebaseKey.json');
-
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
