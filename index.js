@@ -6,7 +6,7 @@ const admin = require("firebase-admin");
 const bodyParser = require('body-parser');
 require('dotenv').config()
 
-const port = process.env.PORT || 4000
+const port = process.env.PORT || 5000
 
 const serviceAccount = require('./firebaseKey.json');
 admin.initializeApp({
@@ -147,5 +147,4 @@ client.connect(err => {
 app.get('/', (req, res) => {
   res.send('Hello Doctors')
 })
-
 app.listen(port)
